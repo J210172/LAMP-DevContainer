@@ -1,14 +1,16 @@
 FROM php:8.2-apache
 
-RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
-    && apt-get install -y mariadb-client \ 
-    && apt-get clean -y && rm -rf /var/lib/apt/lists/*
-
 RUN apt-get update \
-    && apt-get install -y sendmail libpng-dev \
+    && export DEBIAN_FRONTEND=noninteractive \
+    && apt-get install -y mariadb-client \
+    && apt-get install -y mariadb-server \
+    && apt-get install -y sendmail \
+    && apt-get install -y libpng-dev \
     && apt-get install -y libzip-dev \
     && apt-get install -y zlib1g-dev \
-    && apt-get install -y libonig-dev
+    && apt-get install -y libonig-dev \
+    && apt-get clean -y \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN apache2ctl start
 
