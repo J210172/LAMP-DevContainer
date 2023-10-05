@@ -11,8 +11,8 @@ services:
       MYSQL_USER: mariadb
       MYSQL_PASSWORD: mariadb
     volumes:
-      - ./dump:/docker-entrypoint-initdb.d
-      - ./conf:/etc/mysql/conf.d
+      - ../dump:/docker-entrypoint-initdb.d
+      - ../conf:/etc/mysql/conf.d
       - mariadb-data:/var/lib/mysql
     networks:
       - default
@@ -24,7 +24,7 @@ services:
     ports: 
       - "80:80"
     volumes:
-      - ./www:/var/www/html
+      - ../www:/var/www/html
     links:
       - db
     networks:

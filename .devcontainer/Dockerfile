@@ -1,4 +1,4 @@
-FROM php:8.0.0-apache
+FROM php:8.2-apache
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get install -y mariadb-client \ 
@@ -8,8 +8,9 @@ RUN apt-get update \
     && apt-get install -y sendmail libpng-dev \
     && apt-get install -y libzip-dev \
     && apt-get install -y zlib1g-dev \
-    && apt-get install -y libonig-dev \
-    && rm -rf /var/lib/apt/lists/*
+    && apt-get install -y libonig-dev
+
+RUN apache2ctl start
 
 # RUN pecl install redis-5.3.7 \
 # 	&& pecl install xdebug-3.2.1 \
