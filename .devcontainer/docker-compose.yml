@@ -1,48 +1,36 @@
-version: "3.1"
-services:
-  db:
-    image: mariadb:11.0
-    restart: always
-    ports: 
-      - "3306:3306"
-    command: --default-authentication-plugin=mysql_native_password
-    environment:
-      MYSQL_ROOT_PASSWORD: mariadb
-      MYSQL_DATABASE: mariadb
-      MYSQL_USER: mariadb
-      MYSQL_PASSWORD: mariadb
-    volumes:
-      - ../dump:/docker-entrypoint-initdb.d
-      - ../conf:/etc/mysql/conf.d
-      - mariadb-data:/var/lib/mysql
-    networks:
-      - default
+version: '3.8'
 
-  www:
+services: 
+  app:
     build:
       context: .
       dockerfile: Dockerfile
-    ports: 
-      - "80:80"
-    volumes:
-      - ../www:/var/www/html
-    links:
-      - db
-    networks:
-      - default
 
-  phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    restart: always
-    links: 
-      - db:db
-    ports:
-      - 8080:80
+    volumes:
+      - ../..:/workspaces:cached
+
+    # Overrides default command so things don't shut down after the process ends.
+    command: sleep infinity
+
+    # Runs app on the same network as the database container, allows "forwardPorts" in devcontainer.json function.
+    network_mode: service:db
+
+    # Use "forwardPorts" in **devcontainer.json** to forward an app port locally. 
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+
+  db:
+    image: mariadb:10.4
+    restart: unless-stopped
+    volumes:
+      - mariadb-data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: mariadb
       MYSQL_DATABASE: mariadb
       MYSQL_USER: mariadb
       MYSQL_PASSWORD: mariadb
 
+    # Add "forwardPorts": ["3306"] to **devcontainer.json** to forward MariaDB locally.
+    # (Adding the "ports" property to this file will not forward from a Codespace.)
+  
 volumes:
   mariadb-data:
