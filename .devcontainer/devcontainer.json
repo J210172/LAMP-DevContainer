@@ -5,7 +5,7 @@
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "www",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-
+	"runServices": ["db", "phpmyadmin", "www"],
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
 
