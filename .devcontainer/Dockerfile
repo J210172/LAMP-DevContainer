@@ -1,4 +1,4 @@
-FROM php:8.0.0-apache
+FROM php:8.2-apache
 
 RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get install -y mariadb-client \ 
